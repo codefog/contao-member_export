@@ -1,7 +1,7 @@
 member_export Changelog
 =======================
 
-Version 1.0.2 stable (2015-01-??)
+Version 1.0.2 stable (2015-01-20)
 ---------------------------------
 
 ### Improved
