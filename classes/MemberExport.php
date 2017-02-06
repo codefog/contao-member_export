@@ -46,7 +46,7 @@ class MemberExport extends \Backend
             {
                 if (is_array($varCallback))
                 {
-                    \System::importStatic($varCallback[0])->$varCallback[1](\Input::post('headerFields'), \Input::post('raw'));
+                    \System::importStatic($varCallback[0])->{$varCallback[1]}(\Input::post('headerFields'), \Input::post('raw'));
                 }
                 elseif (is_callable($varCallback))
                 {
