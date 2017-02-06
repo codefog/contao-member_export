@@ -1,6 +1,13 @@
 member_export Changelog
 =======================
 
+Version 1.0.3 stable (2017-02-06)
+---------------------------------
+
+### Fixed
+- Fixed PHP7 compatibility (#3)
+
+
 Version 1.0.2 stable (2015-01-20)
 ---------------------------------
 
