@@ -145,18 +145,25 @@ class MemberExport extends \Backend
         }
 
         // Format the values
-        if (!$blnRawData)
+        $objWriter->setRowCallback(function($arrRow) use ($blnRawData)
         {
-            $objWriter->setRowCallback(function($arrRow)
-            {
-                foreach ($arrRow as $k => $v)
-                {
-                    $arrRow[$k] = \Haste\Util\Format::dcaValue('tl_member', $k, $v);
-                }
+            $arrReturn = [];
 
-                return $arrRow;
-            });
-        }
+            foreach ($GLOBALS['TL_DCA']['tl_member']['fields'] as $strField => $arrField) {
+                if ($blnRawData) {
+                    $arrReturn[$strField] = $arrRow[$strField];
+                } else {
+                    $arrReturn[$strField] = \Haste\Util\Format::dcaValue('tl_member', $strField, $arrRow[$strField]);
+
+                    // Handle the UUIDs
+                    if (\Validator::isUuid($arrRow[$strField])) {
+                        $arrReturn[$strField] = \FilesModel::findByPk($arrRow[$strField])->path;
+                    }
+                }
+            }
+
+            return array_values($arrReturn);
+        });
 
         $objWriter->writeFrom($objReader);
 
