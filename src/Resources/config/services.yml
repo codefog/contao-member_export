@@ -1,0 +1,16 @@
+services:
+    codefog_member_export.controller:
+        class: Codefog\MemberExportBundle\ExportController
+        arguments:
+            - "@contao.framework"
+            - "@codefog_member_export.registry"
+            - "@request_stack"
+
+    codefog_member_export.registry:
+        class: Codefog\MemberExportBundle\ExporterRegistry
+
+    codefog_member_export.exporter.csv:
+        class: Codefog\MemberExportBundle\Exporter\CsvExporter
+        public: false
+        tags:
+            - { name: 'codefog_member_export.exporter', priority: 128 }
