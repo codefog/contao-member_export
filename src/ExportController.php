@@ -2,6 +2,7 @@
 
 namespace Codefog\MemberExportBundle;
 
+use Codefog\MemberExportBundle\Exception\ExportException;
 use Contao\BackendTemplate;
 use Contao\Controller;
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
@@ -69,15 +70,10 @@ class ExportController
      */
     protected function processForm(Request $request)
     {
-        dump($request->request->all());
-        exit;
-
         try {
             $exporter = $this->registry->get($request->request->get('format'));
-
-            $request->request->get('headerFields');
-            $request->request->get('raw');
-        } catch (\Exception $e) {
+            $exporter->export($this->createConfigFromRequest($request));
+        } catch (ExportException $e) {
             /** @var Message $message */
             $message = $this->framework->getAdapter(Message::class);
             $message->addError($e->getMessage());
@@ -86,6 +82,22 @@ class ExportController
         /** @var Controller $controller */
         $controller = $this->framework->getAdapter(Controller::class);
         $controller->reload();
+    }
+
+    /**
+     * Create the config from request
+     *
+     * @param Request $request
+     *
+     * @return ExportConfig
+     */
+    protected function createConfigFromRequest(Request $request)
+    {
+        $config = new ExportConfig();
+        $config->setHasHeaderFields((bool) $request->request->get('headerFields'));
+        $config->setUseRawData((bool) $request->request->get('raw'));
+
+        return $config;
     }
 
     /**

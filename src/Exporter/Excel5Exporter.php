@@ -2,16 +2,16 @@
 
 namespace Codefog\MemberExportBundle\Exporter;
 
-use Haste\IO\Writer\CsvFileWriter;
+use Haste\IO\Writer\ExcelFileWriter;
 
-class CsvExporter extends BaseExporter
+class Excel5Exporter extends BaseExporter
 {
     /**
      * @inheritDoc
      */
     public function getAlias()
     {
-        return 'csv';
+        return 'excel5';
     }
 
     /**
@@ -19,6 +19,9 @@ class CsvExporter extends BaseExporter
      */
     protected function getWriter()
     {
-        return new CsvFileWriter();
+        $writer = new ExcelFileWriter();
+        $writer->setFormat('Excel5');
+
+        return $writer;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Codefog\MemberExportBundle\Exporter;
 
+use Codefog\MemberExportBundle\ExportConfig;
+
 interface ExporterInterface
 {
     /**
@@ -10,4 +12,11 @@ interface ExporterInterface
      * @return string
      */
     public function getAlias();
+
+    /**
+     * Run the export
+     *
+     * @param ExportConfig $config
+     */
+    public function export(ExportConfig $config);
 }
