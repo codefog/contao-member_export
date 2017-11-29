@@ -50,6 +50,8 @@ class ExportController
      * Run the controller
      *
      * @return string
+     *
+     * @codeCoverageIgnore
      */
     public function run()
     {
@@ -67,6 +69,8 @@ class ExportController
      * Process the form
      *
      * @param Request $request
+     *
+     * @codeCoverageIgnore
      */
     protected function processForm(Request $request)
     {
@@ -90,6 +94,8 @@ class ExportController
      * @param Request $request
      *
      * @return ExportConfig
+     *
+     * @codeCoverageIgnore
      */
     protected function createConfigFromRequest(Request $request)
     {
@@ -106,6 +112,8 @@ class ExportController
      * @param string $formId
      *
      * @return BackendTemplate
+     *
+     * @codeCoverageIgnore
      */
     protected function getTemplate($formId)
     {
@@ -134,6 +142,8 @@ class ExportController
      * Generate the options
      *
      * @return array
+     *
+     * @codeCoverageIgnore
      */
     protected function generateOptions()
     {

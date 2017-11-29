@@ -23,20 +23,26 @@ class ExporterPass implements CompilerPassInterface
     /**
      * @var array
      */
-    private $excelServices = [];
+    private $excluded = [];
 
     /**
      * ExporterPass constructor.
      *
      * @param string $registry
      * @param string $tag
-     * @param array  $excelServices
      */
-    public function __construct($registry, $tag, array $excelServices)
+    public function __construct($registry, $tag)
     {
         $this->registry = $registry;
         $this->tag = $tag;
-        $this->excelServices = $excelServices;
+    }
+
+    /**
+     * @param array $excluded
+     */
+    public function setExcluded(array $excluded)
+    {
+        $this->excluded = $excluded;
     }
 
     /**
@@ -51,8 +57,7 @@ class ExporterPass implements CompilerPassInterface
         $definition = $container->getDefinition($this->registry);
 
         foreach ($this->findAndSortTaggedServices($this->tag, $container) as $service) {
-            // Skip the Excel exported if the extension is not installed
-            if (!class_exists('PHPExcel') && in_array((string) $service, $this->excelServices, true)) {
+            if (in_array((string) $service, $this->excluded, true)) {
                 continue;
             }
 

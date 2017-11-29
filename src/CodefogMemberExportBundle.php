@@ -13,10 +13,22 @@ class CodefogMemberExportBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new ExporterPass(
-            'codefog_member_export.registry',
-            'codefog_member_export.exporter',
-            ['codefog_member_export.exporter.excel5', 'codefog_member_export.exporter.excel2007']
-        ));
+        $exporterPass = new ExporterPass('codefog_member_export.registry', 'codefog_member_export.exporter');
+        $this->handleExcelServices($exporterPass);
+        $container->addCompilerPass($exporterPass);
+    }
+
+    /**
+     * Exclude the Excel services if the required class is not found
+     *
+     * @param ExporterPass $exporterPass
+     *
+     * @codeCoverageIgnore
+     */
+    private function handleExcelServices(ExporterPass $exporterPass)
+    {
+        if (!class_exists('PHPExcel')) {
+            $exporterPass->setExcluded(['codefog_member_export.exporter.excel5', 'codefog_member_export.exporter.excel2007']);
+        }
     }
 }
