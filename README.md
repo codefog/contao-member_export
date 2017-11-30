@@ -1,8 +1,8 @@
 # Member Export bundle for Contao CMS
 
-![](https://img.shields.io/packagist/v/codefog/contao-member_export.svg)
-![](https://img.shields.io/packagist/l/codefog/contao-member_export.svg)
-![](https://img.shields.io/packagist/dt/codefog/contao-member_export.svg)
+[![](https://img.shields.io/packagist/v/codefog/contao-member_export.svg)](https://packagist.org/packages/codefog/contao-member_export)
+[![](https://img.shields.io/packagist/l/codefog/contao-member_export.svg)](https://github.com/codefog/contao-member_export/blob/master/LICENSE.txt)
+[![](https://img.shields.io/packagist/dt/codefog/contao-member_export.svg)](https://packagist.org/packages/codefog/contao-member_export)
 [![](https://img.shields.io/travis/codefog/contao-member_export/master.svg)](https://travis-ci.org/codefog/contao-member_export)
 [![](https://img.shields.io/coveralls/codefog/contao-member_export/master.svg)](https://coveralls.io/github/codefog/contao-member_export)
 
