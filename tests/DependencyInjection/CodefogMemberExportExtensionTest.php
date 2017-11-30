@@ -7,7 +7,7 @@ use Codefog\MemberExportBundle\DependencyInjection\CodefogMemberExportExtension;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class CodefogTagsExtensionTest extends TestCase
+class CodefogMemberExportExtensionTest extends TestCase
 {
     public function testLoad()
     {
