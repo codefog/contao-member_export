@@ -1,22 +1,26 @@
-# Member Export extension for Contao Open Source CMS
+# Member Export bundle for Contao CMS
 
 ![](https://img.shields.io/packagist/v/codefog/contao-member_export.svg)
 ![](https://img.shields.io/packagist/l/codefog/contao-member_export.svg)
 ![](https://img.shields.io/packagist/dt/codefog/contao-member_export.svg)
+[![](https://img.shields.io/travis/codefog/contao-member_export/master.svg)](https://travis-ci.org/codefog/contao-member_export)
+[![](https://img.shields.io/coveralls/codefog/contao-member_export/master.svg)](https://coveralls.io/github/codefog/contao-member_export)
 
-Member export is an extension for the [Contao Open Source CMS](https://contao.org).
+Member Export is a bundle for the [Contao CMS](https://contao.org).
 
-Allows to export the member data in various formats. Currently supported formats:
+It allows to export the member data to a file. Currently supported formats:
 
-* CSV (.csv)
-* Excel5 (.xls)
-* Excel2007 (.xlsx)
+- CSV (.csv)
+- Excel5 (.xls) – `phpoffice/phpexcel` is required
+- Excel2007 (.xlsx) – `phpoffice/phpexcel` is required
 
 ![](docs/images/preview.png)
 
 ## Documentation
 
-[Read the documentation](docs/README.md)
+1. [Installation](docs/installation.md)
+2. [Usage](docs/usage.md)
+3. [Developers](docs/developers.md)
 
 ## Copyright
 
