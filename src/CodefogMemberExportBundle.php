@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Member Export Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2017, Codefog
+ * @author     Codefog <https://codefog.pl>
+ * @license    MIT
+ */
+
 namespace Codefog\MemberExportBundle;
 
 use Codefog\MemberExportBundle\DependencyInjection\Compiler\ExporterPass;
@@ -9,7 +17,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class CodefogMemberExportBundle extends Bundle
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {
@@ -19,7 +27,7 @@ class CodefogMemberExportBundle extends Bundle
     }
 
     /**
-     * Exclude the Excel services if the required class is not found
+     * Exclude the Excel services if the required class is not found.
      *
      * @param ExporterPass $exporterPass
      *
@@ -27,7 +35,7 @@ class CodefogMemberExportBundle extends Bundle
      */
     private function handleExcelServices(ExporterPass $exporterPass)
     {
-        if (!class_exists('PHPExcel')) {
+        if (!\class_exists('PHPExcel')) {
             $exporterPass->setExcluded(['codefog_member_export.exporter.excel5', 'codefog_member_export.exporter.excel2007']);
         }
     }

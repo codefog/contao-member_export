@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Member Export Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2017, Codefog
+ * @author     Codefog <https://codefog.pl>
+ * @license    MIT
+ */
+
 namespace Codefog\MemberExportBundle;
 
 use Codefog\MemberExportBundle\Exception\ExportException;
@@ -47,7 +55,7 @@ class ExportController
     }
 
     /**
-     * Run the controller
+     * Run the controller.
      *
      * @return string
      *
@@ -66,7 +74,7 @@ class ExportController
     }
 
     /**
-     * Process the form
+     * Process the form.
      *
      * @param Request $request
      *
@@ -89,7 +97,7 @@ class ExportController
     }
 
     /**
-     * Create the config from request
+     * Create the config from request.
      *
      * @param Request $request
      *
@@ -107,7 +115,7 @@ class ExportController
     }
 
     /**
-     * Get the template
+     * Get the template.
      *
      * @param string $formId
      *
@@ -118,7 +126,7 @@ class ExportController
     protected function getTemplate($formId)
     {
         /**
-         * @var Environment $environment
+         * @var Environment
          * @var Message     $message
          * @var System      $system
          */
@@ -139,7 +147,7 @@ class ExportController
     }
 
     /**
-     * Generate the options
+     * Generate the options.
      *
      * @return array
      *

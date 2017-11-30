@@ -1,11 +1,16 @@
 <?php
 
-/**
- * Buttons
+/*
+ * Member Export Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2017, Codefog
+ * @author     Codefog <https://codefog.pl>
+ * @license    MIT
  */
+
 $GLOBALS['TL_LANG']['tl_member']['export'] = ['Export', 'Export members'];
 
-/**
+/*
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_member']['export_description'] = 'Here you can export the members data to the file. Please use the below dropdown menu to choose the desired format. The download will begin immediately after you submit the form.';

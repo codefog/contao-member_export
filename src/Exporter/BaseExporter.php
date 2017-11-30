@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Member Export Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2017, Codefog
+ * @author     Codefog <https://codefog.pl>
+ * @license    MIT
+ */
+
 namespace Codefog\MemberExportBundle\Exporter;
 
 use Codefog\MemberExportBundle\Exception\ExportException;
@@ -33,11 +41,11 @@ abstract class BaseExporter implements ExporterInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function export(ExportConfig $config)
     {
-        if (($models = $this->getModels()) === null) {
+        if (null === ($models = $this->getModels())) {
             throw new ExportException('There are no members to export');
         }
 
@@ -63,7 +71,7 @@ abstract class BaseExporter implements ExporterInterface
     }
 
     /**
-     * Get the row callback
+     * Get the row callback.
      *
      * @param ExportConfig $config
      *
@@ -72,9 +80,9 @@ abstract class BaseExporter implements ExporterInterface
     protected function getRowCallback(ExportConfig $config)
     {
         /**
-         * @var FilesModel $filesModel
-         * @var Format $format
-         * @var Validator $validator
+         * @var FilesModel
+         * @var Format     $format
+         * @var Validator  $validator
          */
         $filesModel = $this->framework->getAdapter(FilesModel::class);
         $format = $this->framework->getAdapter(Format::class);
@@ -96,12 +104,12 @@ abstract class BaseExporter implements ExporterInterface
                 }
             }
 
-            return array_values($return);
+            return \array_values($return);
         };
     }
 
     /**
-     * Get the header fields
+     * Get the header fields.
      *
      * @param ExportConfig $config
      *
@@ -119,7 +127,7 @@ abstract class BaseExporter implements ExporterInterface
     }
 
     /**
-     * Get the fields
+     * Get the fields.
      *
      * @return array
      */
@@ -129,7 +137,7 @@ abstract class BaseExporter implements ExporterInterface
         $dcaLoader = $this->framework->createInstance(DcaLoader::class, ['tl_member']);
         $dcaLoader->load();
 
-        if (!isset($GLOBALS['TL_DCA']['tl_member']['fields']) || !is_array($GLOBALS['TL_DCA']['tl_member']['fields'])) {
+        if (!isset($GLOBALS['TL_DCA']['tl_member']['fields']) || !\is_array($GLOBALS['TL_DCA']['tl_member']['fields'])) {
             return [];
         }
 
@@ -137,7 +145,7 @@ abstract class BaseExporter implements ExporterInterface
     }
 
     /**
-     * Get the models
+     * Get the models.
      *
      * @return Collection|null
      */
@@ -150,7 +158,7 @@ abstract class BaseExporter implements ExporterInterface
     }
 
     /**
-     * Get the writer
+     * Get the writer.
      *
      * @return AbstractFileWriter
      */

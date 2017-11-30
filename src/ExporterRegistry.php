@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Member Export Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2017, Codefog
+ * @author     Codefog <https://codefog.pl>
+ * @license    MIT
+ */
+
 namespace Codefog\MemberExportBundle;
 
 use Codefog\MemberExportBundle\Exporter\ExporterInterface;
@@ -12,7 +20,7 @@ class ExporterRegistry
     private $exporters = [];
 
     /**
-     * Add the exporter
+     * Add the exporter.
      *
      * @param ExporterInterface $exporter
      */
@@ -24,26 +32,26 @@ class ExporterRegistry
     /**
      * @param string $alias
      *
-     * @return ExporterInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return ExporterInterface
      */
     public function get($alias)
     {
-        if (!array_key_exists($alias, $this->exporters)) {
-            throw new \InvalidArgumentException(sprintf('The exporter "%s" does not exist', $alias));
+        if (!\array_key_exists($alias, $this->exporters)) {
+            throw new \InvalidArgumentException(\sprintf('The exporter "%s" does not exist', $alias));
         }
 
         return $this->exporters[$alias];
     }
 
     /**
-     * Get the aliases
+     * Get the aliases.
      *
      * @return array
      */
     public function getAliases()
     {
-        return array_keys($this->exporters);
+        return \array_keys($this->exporters);
     }
 }

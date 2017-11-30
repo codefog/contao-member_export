@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Member Export Bundle for Contao Open Source CMS.
+ *
+ * @copyright  Copyright (c) 2017, Codefog
+ * @author     Codefog <https://codefog.pl>
+ * @license    MIT
+ */
+
 namespace Codefog\MemberExportBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -46,7 +54,7 @@ class ExporterPass implements CompilerPassInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
@@ -57,7 +65,7 @@ class ExporterPass implements CompilerPassInterface
         $definition = $container->getDefinition($this->registry);
 
         foreach ($this->findAndSortTaggedServices($this->tag, $container) as $service) {
-            if (in_array((string) $service, $this->excluded, true)) {
+            if (\in_array((string) $service, $this->excluded, true)) {
                 continue;
             }
 
