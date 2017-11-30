@@ -3,7 +3,7 @@
 $date = date('Y');
 
 $header = <<<EOF
-Member Export Bundle for Contao Open Source CMS.
+Member Export bundle for Contao Open Source CMS.
 
 @copyright  Copyright (c) $date, Codefog
 @author     Codefog <https://codefog.pl>
