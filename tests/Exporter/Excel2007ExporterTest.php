@@ -11,14 +11,14 @@ class Excel2007ExporterTest extends ExporterTestCase
 {
     public function testInstantiation()
     {
-        static::assertInstanceOf(Excel2007Exporter::class, new Excel2007Exporter($this->mockFramework()));
+        $this->assertInstanceOf(Excel2007Exporter::class, new Excel2007Exporter($this->mockFramework()));
     }
 
     public function testGetAlias()
     {
         $exporter = new Excel2007Exporter($this->mockFramework());
 
-        static::assertSame('excel2007', $exporter->getAlias());
+        $this->assertSame('excel2007', $exporter->getAlias());
     }
 
     public function testExport()
@@ -33,7 +33,7 @@ class Excel2007ExporterTest extends ExporterTestCase
         $exporter = new Excel2007Exporter($framework);
         $exporter->export($this->getExportConfig());
 
-        static::assertTrue($exportComplete);
+        $this->assertTrue($exportComplete);
     }
 
     public function testExportNoData()
@@ -56,6 +56,6 @@ class Excel2007ExporterTest extends ExporterTestCase
         $exporter = new Excel2007Exporter($framework);
         $exporter->export($this->getExportConfig());
 
-        static::assertTrue($exportComplete);
+        $this->assertTrue($exportComplete);
     }
 }

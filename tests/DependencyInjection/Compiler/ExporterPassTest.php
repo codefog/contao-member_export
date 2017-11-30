@@ -23,7 +23,7 @@ class ExporterPassTest extends TestCase
 
     public function testInstantiation()
     {
-        static::assertInstanceOf(ExporterPass::class, $this->exporterPass);
+        $this->assertInstanceOf(ExporterPass::class, $this->exporterPass);
     }
 
     public function testProcess()
@@ -51,11 +51,11 @@ class ExporterPassTest extends TestCase
 
         $calls = $registryDefinition->getMethodCalls();
 
-        static::assertEquals('add', $calls[0][0]);
-        static::assertInstanceOf(Reference::class, $calls[0][1][0]);
-        static::assertEquals('exporter2', (string) $calls[0][1][0]);
-        static::assertEquals('exporter1', (string) $calls[1][1][0]);
-        static::assertCount(2, $calls[0]);
+        $this->assertEquals('add', $calls[0][0]);
+        $this->assertInstanceOf(Reference::class, $calls[0][1][0]);
+        $this->assertEquals('exporter2', (string) $calls[0][1][0]);
+        $this->assertEquals('exporter1', (string) $calls[1][1][0]);
+        $this->assertCount(2, $calls[0]);
     }
 
     public function testRegistryNotExists()
@@ -63,6 +63,6 @@ class ExporterPassTest extends TestCase
         $container = new ContainerBuilder();
         $this->exporterPass->process($container);
 
-        static::assertFalse($container->hasDefinition('registry'));
+        $this->assertFalse($container->hasDefinition('registry'));
     }
 }

@@ -11,7 +11,7 @@ class CodefogMemberExportBundleTest extends TestCase
 {
     public function testInstantiation()
     {
-        static::assertInstanceOf(CodefogMemberExportBundle::class, new CodefogMemberExportBundle());
+        $this->assertInstanceOf(CodefogMemberExportBundle::class, new CodefogMemberExportBundle());
     }
 
     public function testRegisterCompilerPass()
@@ -30,6 +30,6 @@ class CodefogMemberExportBundleTest extends TestCase
             }
         }
 
-        static::assertTrue($found);
+        $this->assertTrue($found);
     }
 }

@@ -10,7 +10,7 @@ class ExporterRegistryTest extends TestCase
 {
     public function testInstantiation()
     {
-        static::assertInstanceOf(ExporterRegistry::class, new ExporterRegistry());
+        $this->assertInstanceOf(ExporterRegistry::class, new ExporterRegistry());
     }
 
     public function testAddProviders()
@@ -31,9 +31,9 @@ class ExporterRegistryTest extends TestCase
         $registry->add($exporter1);
         $registry->add($exporter2);
 
-        static::assertSame($exporter1, $registry->get('exporter1'));
-        static::assertSame($exporter2, $registry->get('exporter2'));
-        static::assertSame(['exporter1', 'exporter2'], $registry->getAliases());
+        $this->assertSame($exporter1, $registry->get('exporter1'));
+        $this->assertSame($exporter2, $registry->get('exporter2'));
+        $this->assertSame(['exporter1', 'exporter2'], $registry->getAliases());
     }
 
     public function testProviderDoesNotExist()

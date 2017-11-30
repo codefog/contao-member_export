@@ -13,7 +13,7 @@ class ExportConfigTest extends TestCase
         $config->setHasHeaderFields(true);
         $config->setUseRawData(true);
 
-        static::assertTrue($config->hasHeaderFields());
-        static::assertTrue($config->useRawData());
+        $this->assertTrue($config->hasHeaderFields());
+        $this->assertTrue($config->useRawData());
     }
 }

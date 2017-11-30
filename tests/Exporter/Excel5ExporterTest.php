@@ -11,14 +11,14 @@ class Excel5ExporterTest extends ExporterTestCase
 {
     public function testInstantiation()
     {
-        static::assertInstanceOf(Excel5Exporter::class, new Excel5Exporter($this->mockFramework()));
+        $this->assertInstanceOf(Excel5Exporter::class, new Excel5Exporter($this->mockFramework()));
     }
 
     public function testGetAlias()
     {
         $exporter = new Excel5Exporter($this->mockFramework());
 
-        static::assertSame('excel5', $exporter->getAlias());
+        $this->assertSame('excel5', $exporter->getAlias());
     }
 
     public function testExport()
@@ -33,7 +33,7 @@ class Excel5ExporterTest extends ExporterTestCase
         $exporter = new Excel5Exporter($framework);
         $exporter->export($this->getExportConfig());
 
-        static::assertTrue($exportComplete);
+        $this->assertTrue($exportComplete);
     }
 
     public function testExportNoData()
@@ -56,6 +56,6 @@ class Excel5ExporterTest extends ExporterTestCase
         $exporter = new Excel5Exporter($framework);
         $exporter->export($this->getExportConfig());
 
-        static::assertTrue($exportComplete);
+        $this->assertTrue($exportComplete);
     }
 }

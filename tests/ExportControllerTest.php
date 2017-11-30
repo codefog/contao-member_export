@@ -16,6 +16,6 @@ class ExportControllerTest extends TestCase
         $registry = $this->createMock(ExporterRegistry::class);
         $requestStack = $this->createMock(RequestStack::class);
 
-        static::assertInstanceOf(ExportController::class, new ExportController($framework, $registry, $requestStack));
+        $this->assertInstanceOf(ExportController::class, new ExportController($framework, $registry, $requestStack));
     }
 }

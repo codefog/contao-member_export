@@ -11,14 +11,14 @@ class CsvExporterTest extends ExporterTestCase
 {
     public function testInstantiation()
     {
-        static::assertInstanceOf(CsvExporter::class, new CsvExporter($this->mockFramework()));
+        $this->assertInstanceOf(CsvExporter::class, new CsvExporter($this->mockFramework()));
     }
 
     public function testGetAlias()
     {
         $exporter = new CsvExporter($this->mockFramework());
 
-        static::assertSame('csv', $exporter->getAlias());
+        $this->assertSame('csv', $exporter->getAlias());
     }
 
     public function testExport()
@@ -33,7 +33,7 @@ class CsvExporterTest extends ExporterTestCase
         $exporter = new CsvExporter($framework);
         $exporter->export($this->getExportConfig());
 
-        static::assertTrue($exportComplete);
+        $this->assertTrue($exportComplete);
     }
 
     public function testExportNoData()
@@ -56,6 +56,6 @@ class CsvExporterTest extends ExporterTestCase
         $exporter = new CsvExporter($framework);
         $exporter->export($this->getExportConfig());
 
-        static::assertTrue($exportComplete);
+        $this->assertTrue($exportComplete);
     }
 }
