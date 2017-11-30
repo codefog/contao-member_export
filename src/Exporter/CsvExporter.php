@@ -19,6 +19,9 @@ class CsvExporter extends BaseExporter
      */
     protected function getWriter()
     {
-        return new CsvFileWriter();
+        /** @var CsvFileWriter $writer */
+        $writer = $this->framework->createInstance(CsvFileWriter::class);
+
+        return $writer;
     }
 }

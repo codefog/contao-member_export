@@ -20,7 +20,7 @@ abstract class BaseExporter implements ExporterInterface
     /**
      * @var ContaoFrameworkInterface
      */
-    private $framework;
+    protected $framework;
 
     /**
      * BaseExporter constructor.
@@ -41,7 +41,8 @@ abstract class BaseExporter implements ExporterInterface
             throw new ExportException('There are no members to export');
         }
 
-        $reader = new ModelCollectionReader($models);
+        /** @var ModelCollectionReader $reader */
+        $reader = $this->framework->createInstance(ModelCollectionReader::class, [$models]);
         $writer = $this->getWriter();
 
         // Set the row callback
@@ -56,7 +57,8 @@ abstract class BaseExporter implements ExporterInterface
         // Write the data
         $writer->writeFrom($reader);
 
-        $file = new File($writer->getFilename());
+        /** @var File $file */
+        $file = $this->framework->createInstance(File::class, [$writer->getFilename()]);
         $file->sendToBrowser();
     }
 
@@ -123,10 +125,11 @@ abstract class BaseExporter implements ExporterInterface
      */
     protected function getFields()
     {
-        $dcaLoader = new DcaLoader('tl_member');
+        /** @var DcaLoader $dcaLoader */
+        $dcaLoader = $this->framework->createInstance(DcaLoader::class, ['tl_member']);
         $dcaLoader->load();
 
-        if (!is_array($GLOBALS['TL_DCA']['tl_member']['fields'])) {
+        if (!isset($GLOBALS['TL_DCA']['tl_member']['fields']) || !is_array($GLOBALS['TL_DCA']['tl_member']['fields'])) {
             return [];
         }
 

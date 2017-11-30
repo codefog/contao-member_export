@@ -1,6 +1,6 @@
 <?php
 
-namespace Codefog\TagsBundle\Test;
+namespace Codefog\MemberExportBundle\Tests;
 
 use Codefog\MemberExportBundle\ExportConfig;
 use PHPUnit\Framework\TestCase;

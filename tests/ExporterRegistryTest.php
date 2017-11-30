@@ -1,6 +1,6 @@
 <?php
 
-namespace Codefog\TagsBundle\Test;
+namespace Codefog\MemberExportBundle\Tests;
 
 use Codefog\MemberExportBundle\Exporter\ExporterInterface;
 use Codefog\MemberExportBundle\ExporterRegistry;

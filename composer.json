@@ -30,8 +30,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Codefog\\MemberExportBundle\\": "src/",
-            "Codefog\\MemberExportBundle\\Test\\": "tests/"
+            "Codefog\\MemberExportBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Codefog\\MemberExportBundle\\Tests\\": "tests/"
         }
     },
     "extra": {

@@ -19,7 +19,8 @@ class Excel5Exporter extends BaseExporter
      */
     protected function getWriter()
     {
-        $writer = new ExcelFileWriter();
+        /** @var ExcelFileWriter $writer */
+        $writer = $this->framework->createInstance(ExcelFileWriter::class);
         $writer->setFormat('Excel5');
 
         return $writer;

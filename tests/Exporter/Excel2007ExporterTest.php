@@ -4,21 +4,21 @@ namespace Codefog\MemberExportBundle\Tests\Exporter;
 
 use Codefog\MemberExportBundle\Exception\ExportException;
 use Codefog\MemberExportBundle\ExportConfig;
-use Codefog\MemberExportBundle\Exporter\CsvExporter;
-use Haste\IO\Writer\CsvFileWriter;
+use Codefog\MemberExportBundle\Exporter\Excel2007Exporter;
+use Haste\IO\Writer\ExcelFileWriter;
 
-class CsvExporterTest extends ExporterTestCase
+class Excel2007ExporterTest extends ExporterTestCase
 {
     public function testInstantiation()
     {
-        static::assertInstanceOf(CsvExporter::class, new CsvExporter($this->mockFramework()));
+        static::assertInstanceOf(Excel2007Exporter::class, new Excel2007Exporter($this->mockFramework()));
     }
 
     public function testGetAlias()
     {
-        $exporter = new CsvExporter($this->mockFramework());
+        $exporter = new Excel2007Exporter($this->mockFramework());
 
-        static::assertSame('csv', $exporter->getAlias());
+        static::assertSame('excel2007', $exporter->getAlias());
     }
 
     public function testExport()
@@ -27,10 +27,10 @@ class CsvExporterTest extends ExporterTestCase
 
         $framework = $this->mockFramework(
             $this->getExportAdapters(),
-            $this->getExportInstances(CsvFileWriter::class, true, $exportComplete)
+            $this->getExportInstances(ExcelFileWriter::class, true, $exportComplete)
         );
 
-        $exporter = new CsvExporter($framework);
+        $exporter = new Excel2007Exporter($framework);
         $exporter->export($this->getExportConfig());
 
         static::assertTrue($exportComplete);
@@ -40,20 +40,20 @@ class CsvExporterTest extends ExporterTestCase
     {
         $this->expectException(ExportException::class);
 
-        $exporter = new CsvExporter($this->mockFramework($this->getExportNoDataAdapters()));
+        $exporter = new Excel2007Exporter($this->mockFramework($this->getExportNoDataAdapters()));
         $exporter->export($this->getExportConfig());
     }
 
     public function testExportNoFields()
     {
         $exportComplete = false;
-
+;
         $framework = $this->mockFramework(
             $this->getExportAdapters(),
-            $this->getExportInstances(CsvFileWriter::class, false, $exportComplete)
+            $this->getExportInstances(ExcelFileWriter::class, false, $exportComplete)
         );
 
-        $exporter = new CsvExporter($framework);
+        $exporter = new Excel2007Exporter($framework);
         $exporter->export($this->getExportConfig());
 
         static::assertTrue($exportComplete);
