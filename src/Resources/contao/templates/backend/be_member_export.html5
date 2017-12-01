@@ -1,0 +1,54 @@
+<div id="tl_buttons">
+    <a href="<?= ampersand($this->backUrl) ?>" class="header_back" title="<?= \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) ?>" accesskey="b"><?= $GLOBALS['TL_LANG']['MSC']['backBT'] ?></a>
+</div>
+
+<div class="member-export-content">
+    <h2 class="sub_headline"><?= $GLOBALS['TL_LANG']['tl_member']['export'][1] ?></h2>
+
+    <div class="member-export-text">
+        <p><?= $GLOBALS['TL_LANG']['tl_member']['export_description'] ?></p>
+    </div>
+</div>
+
+<?= $this->message ?>
+
+<form action="<?= ampersand($this->action) ?>" id="tl_member_export" class="tl_form" method="post">
+    <div class="tl_formbody_edit">
+        <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
+        <input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN ?>">
+
+        <fieldset class="tl_tbox nolegend">
+            <div class="widget w50 clr">
+                <h3><label for="format"><?= $GLOBALS['TL_LANG']['tl_member']['export_format'][0] ?></label></h3>
+                <select name="format" id="format" class="tl_select">
+                    <?php foreach ($this->options as $value => $label): ?>
+                        <option value="<?= $value ?>"><?= $label ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <p class="tl_help tl_tip"><?= $GLOBALS['TL_LANG']['tl_member']['export_format'][1] ?></p>
+            </div>
+
+            <div class="widget clr">
+                <div class="tl_checkbox_single_container">
+                    <input type="checkbox" name="headerFields" id="headerFields" class="tl_checkbox" value="1">
+                    <label for="headerFields"><?= $GLOBALS['TL_LANG']['tl_member']['export_headerFields'][0] ?></label>
+                </div>
+                <p class="tl_help tl_tip"><?= $GLOBALS['TL_LANG']['tl_member']['export_headerFields'][1] ?></p>
+            </div>
+
+            <div class="widget clr">
+                <div class="tl_checkbox_single_container">
+                    <input type="checkbox" name="raw" id="raw" class="tl_checkbox" value="1">
+                    <label for="raw"><?= $GLOBALS['TL_LANG']['tl_member']['export_raw'][0] ?></label>
+                </div>
+                <p class="tl_help tl_tip"><?= $GLOBALS['TL_LANG']['tl_member']['export_raw'][1] ?></p>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="tl_formbody_submit">
+        <div class="tl_submit_container">
+            <input type="submit" name="export" id="export" class="tl_submit" accesskey="e" value="<?= \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['tl_member']['export'][0]) ?>">
+        </div>
+    </div>
+</form>
