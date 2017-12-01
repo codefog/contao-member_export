@@ -5,6 +5,32 @@
 3. [**Developers**](developers.md)
 
 
+## Exclude fields from export
+
+To exclude certain fields from the member export you can create the file `app/Resources/contao/dca/tl_member.php`
+with the following content:
+
+```php
+<?php
+
+/**
+ * Exclude fields from member export
+ */
+$excludedFields = ['tstamp', 'password'];
+
+foreach ($excludedFields as $field) {
+    $GLOBALS['TL_DCA']['tl_member']['fields'][$field]['eval']['memberExportExcluded'] = true;
+}
+```
+
+Afterwards you may need to rebuild the cache in Contao Manager or using the commands:
+
+```
+vendor/bin/contao-console cache:clear --no-warmup
+vendor/bin/contao-console cache:warmup
+```
+
+
 ## Create a custom exporter
 
 In addition to the existing exporters you can create your own class that allows to export member data. The new service 
