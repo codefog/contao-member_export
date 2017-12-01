@@ -1,0 +1,35 @@
+services:
+    codefog_member_export.controller:
+        class: Codefog\MemberExportBundle\ExportController
+        arguments:
+            - "@contao.framework"
+            - "@codefog_member_export.registry"
+            - "@request_stack"
+
+    codefog_member_export.registry:
+        class: Codefog\MemberExportBundle\ExporterRegistry
+        public: false
+
+    codefog_member_export.exporter.csv:
+        class: Codefog\MemberExportBundle\Exporter\CsvExporter
+        public: false
+        arguments:
+            - "@contao.framework"
+        tags:
+            - { name: 'codefog_member_export.exporter', priority: 96 }
+
+    codefog_member_export.exporter.excel5:
+        class: Codefog\MemberExportBundle\Exporter\Excel5Exporter
+        public: false
+        arguments:
+            - "@contao.framework"
+        tags:
+            - { name: 'codefog_member_export.exporter', priority: 64 }
+
+    codefog_member_export.exporter.excel2007:
+        class: Codefog\MemberExportBundle\Exporter\Excel2007Exporter
+        public: false
+        arguments:
+            - "@contao.framework"
+        tags:
+            - { name: 'codefog_member_export.exporter', priority: 32 }
