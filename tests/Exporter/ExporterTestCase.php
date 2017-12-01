@@ -72,6 +72,7 @@ abstract class ExporterTestCase extends TestCase
                     $GLOBALS['TL_DCA']['tl_member']['fields'] = [
                         'firstname' => ['label' => 'First name'],
                         'lastname' => ['label' => 'Lastname'],
+                        'password' => ['label' => 'Password', 'eval' => ['memberExportExcluded' => true]],
                     ];
                 } else {
                     unset($GLOBALS['TL_DCA']['tl_member']);

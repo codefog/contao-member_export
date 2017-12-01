@@ -141,7 +141,18 @@ abstract class BaseExporter implements ExporterInterface
             return [];
         }
 
-        return $GLOBALS['TL_DCA']['tl_member']['fields'];
+        $fields = [];
+
+        foreach ($GLOBALS['TL_DCA']['tl_member']['fields'] as $name => $data) {
+            // Skip the excluded fields
+            if (isset($data['eval']['memberExportExcluded']) && $data['eval']['memberExportExcluded']) {
+                continue;
+            }
+
+            $fields[$name] = $data;
+        }
+
+        return $fields;
     }
 
     /**
