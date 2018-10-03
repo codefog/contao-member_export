@@ -17,11 +17,14 @@ use PHPUnit\Framework\TestCase;
 abstract class ExporterTestCase extends TestCase
 {
     /**
+     * @param bool $considerFilters
+     *
      * @return ExportConfig
      */
-    protected function getExportConfig()
+    protected function getExportConfig($considerFilters = true)
     {
         $config = new ExportConfig();
+        $config->setConsiderFilters((bool) $considerFilters);
         $config->setHasHeaderFields(true);
 
         return $config;
@@ -32,9 +35,13 @@ abstract class ExporterTestCase extends TestCase
      */
     protected function getExportNoDataAdapters()
     {
-        $model = $this->createPartialMock(Adapter::class, ['findAll']);
+        $model = $this->createPartialMock(Adapter::class, ['findAll', 'findBy']);
         $model
             ->method('findAll')
+            ->willReturn(null)
+        ;
+        $model
+            ->method('findBy')
             ->willReturn(null)
         ;
 
@@ -46,9 +53,13 @@ abstract class ExporterTestCase extends TestCase
      */
     protected function getExportAdapters()
     {
-        $model = $this->createPartialMock(Adapter::class, ['findAll']);
+        $model = $this->createPartialMock(Adapter::class, ['findAll', 'findBy']);
         $model
             ->method('findAll')
+            ->willReturn([])
+        ;
+        $model
+            ->method('findBy')
             ->willReturn([])
         ;
 

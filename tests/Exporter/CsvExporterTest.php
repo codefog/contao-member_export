@@ -32,6 +32,11 @@ class CsvExporterTest extends ExporterTestCase
 
         $exporter = new CsvExporter($framework);
         $exporter->export($this->getExportConfig());
+        $exporter->export($this->getExportConfig(false));
+
+        $GLOBALS['DC_TABLE_PROCEDURE'] = ['foo'];
+        $GLOBALS['DC_TABLE_VALUES'] = ['bar'];
+        $exporter->export($this->getExportConfig());
 
         $this->assertTrue($exportComplete);
     }

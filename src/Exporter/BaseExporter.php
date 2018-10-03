@@ -90,6 +90,7 @@ abstract class BaseExporter implements ExporterInterface
         $validator = $this->framework->getAdapter(Validator::class);
 
         return function (array $row) use ($config, $filesModel, $format, $validator) {
+            // @codeCoverageIgnoreStart
             $return = [];
 
             foreach ($this->getFields() as $name => $data) {
@@ -106,6 +107,7 @@ abstract class BaseExporter implements ExporterInterface
             }
 
             return \array_values($return);
+            // @codeCoverageIgnoreEnd
         };
     }
 
