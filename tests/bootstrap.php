@@ -27,7 +27,7 @@ if (
 }
 
 // Autoload the fixture classes
-$fixtureLoader = function ($class): void {
+$fixtureLoader = function ($class) {
     if (class_exists($class, false) || interface_exists($class, false) || trait_exists($class, false)) {
         return;
     }
