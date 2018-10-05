@@ -108,6 +108,7 @@ class ExportController
     protected function createConfigFromRequest(Request $request)
     {
         $config = new ExportConfig();
+        $config->setConsiderFilters((bool) $request->request->get('considerFilters'));
         $config->setHasHeaderFields((bool) $request->request->get('headerFields'));
         $config->setUseRawData((bool) $request->request->get('raw'));
 

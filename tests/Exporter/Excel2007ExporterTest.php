@@ -32,6 +32,11 @@ class Excel2007ExporterTest extends ExporterTestCase
 
         $exporter = new Excel2007Exporter($framework);
         $exporter->export($this->getExportConfig());
+        $exporter->export($this->getExportConfig(false));
+
+        $GLOBALS['DC_TABLE_PROCEDURE'] = ['foo'];
+        $GLOBALS['DC_TABLE_VALUES'] = ['bar'];
+        $exporter->export($this->getExportConfig());
 
         $this->assertTrue($exportComplete);
     }
@@ -47,7 +52,7 @@ class Excel2007ExporterTest extends ExporterTestCase
     public function testExportNoFields()
     {
         $exportComplete = false;
-;
+
         $framework = $this->mockFramework(
             $this->getExportAdapters(),
             $this->getExportInstances(ExcelFileWriter::class, false, $exportComplete)

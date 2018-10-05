@@ -15,12 +15,33 @@ class ExportConfig
     /**
      * @var bool
      */
+    private $considerFilters = true;
+
+    /**
+     * @var bool
+     */
     private $hasHeaderFields = false;
 
     /**
      * @var bool
      */
     private $useRawData = false;
+
+    /**
+     * @return bool
+     */
+    public function getConsiderFilters()
+    {
+        return $this->considerFilters;
+    }
+
+    /**
+     * @param bool $considerFilters
+     */
+    public function setConsiderFilters($considerFilters)
+    {
+        $this->considerFilters = $considerFilters;
+    }
 
     /**
      * @return bool
