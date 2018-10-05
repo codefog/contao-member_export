@@ -32,6 +32,11 @@ class Excel5ExporterTest extends ExporterTestCase
 
         $exporter = new Excel5Exporter($framework);
         $exporter->export($this->getExportConfig());
+        $exporter->export($this->getExportConfig(false));
+
+        $GLOBALS['DC_TABLE_PROCEDURE'] = ['foo'];
+        $GLOBALS['DC_TABLE_VALUES'] = ['bar'];
+        $exporter->export($this->getExportConfig());
 
         $this->assertTrue($exportComplete);
     }

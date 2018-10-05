@@ -10,6 +10,7 @@
 
 namespace Codefog\MemberExportBundle\Exporter;
 
+use Codefog\MemberExportBundle\DataContainerHelper;
 use Codefog\MemberExportBundle\Exception\ExportException;
 use Codefog\MemberExportBundle\ExportConfig;
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
@@ -45,7 +46,7 @@ abstract class BaseExporter implements ExporterInterface
      */
     public function export(ExportConfig $config)
     {
-        if (null === ($models = $this->getModels())) {
+        if (null === ($models = $this->getModels($config))) {
             throw new ExportException('There are no members to export');
         }
 
@@ -89,6 +90,7 @@ abstract class BaseExporter implements ExporterInterface
         $validator = $this->framework->getAdapter(Validator::class);
 
         return function (array $row) use ($config, $filesModel, $format, $validator) {
+            // @codeCoverageIgnoreStart
             $return = [];
 
             foreach ($this->getFields() as $name => $data) {
@@ -105,6 +107,7 @@ abstract class BaseExporter implements ExporterInterface
             }
 
             return \array_values($return);
+            // @codeCoverageIgnoreEnd
         };
     }
 
@@ -158,14 +161,29 @@ abstract class BaseExporter implements ExporterInterface
     /**
      * Get the models.
      *
+     * @param ExportConfig $config
+     *
      * @return Collection|null
      */
-    protected function getModels()
+    protected function getModels(ExportConfig $config = null)
     {
         /** @var MemberModel $memberModel */
         $memberModel = $this->framework->getAdapter(MemberModel::class);
 
-        return $memberModel->findAll();
+        // Return all members if no config was provided (BC) or we should not consider listing filters
+        if ($config === null || !$config->getConsiderFilters()) {
+            return $memberModel->findAll();
+        }
+
+        $helper = new DataContainerHelper('tl_member');
+        $helper->buildProceduresAndValues();
+
+        // Return all members if there are no filters set
+        if (count($columns = $helper->getProcedure()) === 0) {
+            return $memberModel->findAll();
+        }
+
+        return $memberModel->findBy($columns, $helper->getValues());
     }
 
     /**
