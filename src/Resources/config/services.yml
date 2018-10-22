@@ -1,6 +1,7 @@
 services:
     codefog_member_export.controller:
         class: Codefog\MemberExportBundle\ExportController
+        public: true
         arguments:
             - "@contao.framework"
             - "@codefog_member_export.registry"
