@@ -20,5 +20,11 @@ class CodefogMemberExportExtensionTest extends TestCase
         $this->assertTrue($container->hasDefinition('codefog_member_export.exporter.csv'));
         $this->assertTrue($container->hasDefinition('codefog_member_export.exporter.excel5'));
         $this->assertTrue($container->hasDefinition('codefog_member_export.exporter.excel2007'));
+
+        $this->assertTrue($container->getDefinition('codefog_member_export.controller')->isPublic());
+        $this->assertFalse($container->getDefinition('codefog_member_export.registry')->isPublic());
+        $this->assertFalse($container->getDefinition('codefog_member_export.exporter.csv')->isPublic());
+        $this->assertFalse($container->getDefinition('codefog_member_export.exporter.excel5')->isPublic());
+        $this->assertFalse($container->getDefinition('codefog_member_export.exporter.excel2007')->isPublic());
     }
 }
