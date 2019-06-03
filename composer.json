@@ -20,10 +20,10 @@
         "friendsofphp/php-cs-fixer": "^2.2",
         "phpunit/phpunit": "^7.0",
         "satooshi/php-coveralls": "2.*@dev",
-        "phpoffice/phpexcel": "^1.8"
+        "phpoffice/phpspreadsheet": "^1.7"
     },
     "suggest": {
-        "phpoffice/phpexcel": "^1.8"
+        "phpoffice/phpspreadsheet": "^1.7"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >=3.0"

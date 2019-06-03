@@ -35,7 +35,7 @@ class CodefogMemberExportBundle extends Bundle
      */
     private function handleExcelServices(ExporterPass $exporterPass)
     {
-        if (!\class_exists('PHPExcel')) {
+        if (!\class_exists('PhpOffice\PhpSpreadsheet\Spreadsheet')) {
             $exporterPass->setExcluded(['codefog_member_export.exporter.excel5', 'codefog_member_export.exporter.excel2007']);
         }
     }
