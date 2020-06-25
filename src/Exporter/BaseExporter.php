@@ -97,7 +97,12 @@ abstract class BaseExporter implements ExporterInterface
                 if ($config->useRawData()) {
                     $return[$name] = $row[$name];
                 } else {
-                    $return[$name] = $format->dcaValue('tl_member', $name, $row[$name]);
+                    // Prevent the date fields from being exported with current date due to an empty value
+                    if (!isset($row[$name]) || $row[$name] === '') {
+                        $return[$name] = '';
+                    } else {
+                        $return[$name] = $format->dcaValue('tl_member', $name, $row[$name]);
+                    }
 
                     // Handle the UUIDs
                     if ($validator->isUuid($row[$name])) {
