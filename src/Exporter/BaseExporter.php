@@ -109,6 +109,8 @@ abstract class BaseExporter implements ExporterInterface
                         $return[$name] = $filesModel->findByPk($row[$name])->path;
                     }
                 }
+                
+                $return[$name] = html_entity_decode($return[$name]);
             }
 
             return \array_values($return);
