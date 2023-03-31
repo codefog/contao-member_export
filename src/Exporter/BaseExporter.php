@@ -19,6 +19,7 @@ use Contao\File;
 use Contao\FilesModel;
 use Contao\MemberModel;
 use Contao\Model\Collection;
+use Contao\StringUtil;
 use Contao\Validator;
 use Haste\IO\Reader\ModelCollectionReader;
 use Haste\IO\Writer\AbstractFileWriter;
@@ -81,15 +82,17 @@ abstract class BaseExporter implements ExporterInterface
     protected function getRowCallback(ExportConfig $config)
     {
         /**
-         * @var FilesModel
+         * @var FilesModel $filesModel
          * @var Format     $format
+         * @var StringUtil $stringUtil
          * @var Validator  $validator
          */
         $filesModel = $this->framework->getAdapter(FilesModel::class);
         $format = $this->framework->getAdapter(Format::class);
+        $stringUtil = $this->framework->getAdapter(StringUtil::class);
         $validator = $this->framework->getAdapter(Validator::class);
 
-        return function (array $row) use ($config, $filesModel, $format, $validator) {
+        return function (array $row) use ($config, $filesModel, $format, $stringUtil, $validator) {
             // @codeCoverageIgnoreStart
             $return = [];
 
@@ -109,6 +112,8 @@ abstract class BaseExporter implements ExporterInterface
                         $return[$name] = $filesModel->findByPk($row[$name])->path;
                     }
                 }
+
+                $return[$name] = $stringUtil->decodeEntities($return[$name]);
             }
 
             return \array_values($return);

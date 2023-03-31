@@ -9,6 +9,7 @@ use Contao\DcaLoader;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\MemberModel;
+use Contao\StringUtil;
 use Contao\Validator;
 use Haste\IO\Reader\ModelCollectionReader;
 use Haste\Util\Format;
@@ -135,6 +136,14 @@ abstract class ExporterTestCase extends TestCase
             ->willReturn('foobar')
         ;
 
+        $stringUtil = $this->createPartialMock(Adapter::class, ['decodeEntities']);
+        $stringUtil
+            ->method('decodeEntities')
+            ->willReturnCallback(function ($value) {
+                return html_entity_decode($value);
+            })
+        ;
+
         $validator = $this->createPartialMock(Adapter::class, ['isUuid']);
         $validator
             ->method('isUuid')
@@ -144,6 +153,7 @@ abstract class ExporterTestCase extends TestCase
         $adapters = array_merge([
             FilesModel::class => $filesModel,
             Format::class => $format,
+            StringUtil::class => $stringUtil,
             Validator::class => $validator,
         ], $adapters);
 
