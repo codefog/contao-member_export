@@ -10,26 +10,40 @@
 
 namespace Codefog\MemberExportBundle\Exporter;
 
-use Haste\IO\Writer\CsvFileWriter;
+use Codefog\MemberExportBundle\ExportConfig;
+use Contao\MemberModel;
+use Contao\Model\Collection;
+use League\Csv\Writer;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
+#[AsTaggedItem(priority: 96)]
 class CsvExporter extends BaseExporter
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
+    public static function getAlias(): string
     {
         return 'csv';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getWriter()
+    protected function getFileExtension(): string
     {
-        /** @var CsvFileWriter $writer */
-        $writer = $this->framework->createInstance(CsvFileWriter::class);
+        return 'csv';
+    }
 
-        return $writer;
+    protected function getExportFile(ExportConfig $config, Collection $models): \SplFileInfo
+    {
+        $csv = Writer::createFromString();
+
+        if ($config->hasHeaderFields()) {
+            $csv->insertOne($this->getHeaderFields($config));
+        }
+
+        $rowCallback = $this->getRowCallback($config);
+
+        /** @var MemberModel $model */
+        foreach ($models as $model) {
+            $csv->insertOne($rowCallback($model->row()));
+        }
+
+        return $this->createTemporaryFile($csv->toString());
     }
 }

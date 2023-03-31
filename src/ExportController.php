@@ -13,7 +13,8 @@ namespace Codefog\MemberExportBundle;
 use Codefog\MemberExportBundle\Exception\ExportException;
 use Contao\BackendTemplate;
 use Contao\Controller;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\Exception\ResponseException;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Environment;
 use Contao\Message;
 use Contao\System;
@@ -22,46 +23,19 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class ExportController
 {
-    /**
-     * @var ContaoFrameworkInterface
-     */
-    private $framework;
-
-    /**
-     * @var ExporterRegistry
-     */
-    private $registry;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * ExportController constructor.
-     *
-     * @param ContaoFrameworkInterface $framework
-     * @param ExporterRegistry         $registry
-     * @param RequestStack             $requestStack
-     */
     public function __construct(
-        ContaoFrameworkInterface $framework,
-        ExporterRegistry $registry,
-        RequestStack $requestStack
+        private readonly ContaoFramework $framework,
+        private readonly ExporterRegistry $registry,
+        private readonly RequestStack $requestStack
     ) {
-        $this->framework = $framework;
-        $this->registry = $registry;
-        $this->requestStack = $requestStack;
     }
 
     /**
      * Run the controller.
      *
-     * @return string
-     *
      * @codeCoverageIgnore
      */
-    public function run()
+    public function run(): string
     {
         $formId = 'tl_member_export';
         $request = $this->requestStack->getCurrentRequest();
@@ -76,15 +50,15 @@ class ExportController
     /**
      * Process the form.
      *
-     * @param Request $request
-     *
      * @codeCoverageIgnore
      */
-    protected function processForm(Request $request)
+    protected function processForm(Request $request): void
     {
         try {
             $exporter = $this->registry->get($request->request->get('format'));
-            $exporter->export($this->createConfigFromRequest($request));
+            $response = $exporter->export($this->createConfigFromRequest($request));
+
+            throw new ResponseException($response);
         } catch (ExportException $e) {
             /** @var Message $message */
             $message = $this->framework->getAdapter(Message::class);
@@ -99,13 +73,9 @@ class ExportController
     /**
      * Create the config from request.
      *
-     * @param Request $request
-     *
-     * @return ExportConfig
-     *
      * @codeCoverageIgnore
      */
-    protected function createConfigFromRequest(Request $request)
+    protected function createConfigFromRequest(Request $request): ExportConfig
     {
         $config = new ExportConfig();
         $config->setConsiderFilters((bool) $request->request->get('considerFilters'));
@@ -118,16 +88,12 @@ class ExportController
     /**
      * Get the template.
      *
-     * @param string $formId
-     *
-     * @return BackendTemplate
-     *
      * @codeCoverageIgnore
      */
-    protected function getTemplate($formId)
+    protected function getTemplate(string $formId): BackendTemplate
     {
         /**
-         * @var Environment
+         * @var Environment $environment
          * @var Message     $message
          * @var System      $system
          */
@@ -150,11 +116,9 @@ class ExportController
     /**
      * Generate the options.
      *
-     * @return array
-     *
      * @codeCoverageIgnore
      */
-    protected function generateOptions()
+    protected function generateOptions(): array
     {
         $options = [];
 

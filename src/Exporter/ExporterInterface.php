@@ -11,20 +11,19 @@
 namespace Codefog\MemberExportBundle\Exporter;
 
 use Codefog\MemberExportBundle\ExportConfig;
+use Symfony\Component\HttpFoundation\Response;
 
 interface ExporterInterface
 {
-    /**
-     * Get the alias.
-     *
-     * @return string
-     */
-    public function getAlias();
+    public const TAG = 'codefog_member_exporter';
 
     /**
-     * Run the export.
-     *
-     * @param ExportConfig $config
+     * Get the alias.
      */
-    public function export(ExportConfig $config);
+    public static function getAlias(): string;
+
+    /**
+     * Run the export and return the response.
+     */
+    public function export(ExportConfig $config): Response;
 }

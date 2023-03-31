@@ -10,89 +10,88 @@
 
 namespace Codefog\MemberExportBundle\Exporter;
 
+use Codefog\HasteBundle\Formatter;
 use Codefog\MemberExportBundle\DataContainerHelper;
 use Codefog\MemberExportBundle\Exception\ExportException;
 use Codefog\MemberExportBundle\ExportConfig;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\DcaLoader;
-use Contao\File;
 use Contao\FilesModel;
 use Contao\MemberModel;
 use Contao\Model\Collection;
 use Contao\StringUtil;
 use Contao\Validator;
-use Haste\IO\Reader\ModelCollectionReader;
-use Haste\IO\Writer\AbstractFileWriter;
-use Haste\Util\Format;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 abstract class BaseExporter implements ExporterInterface
 {
-    /**
-     * @var ContaoFrameworkInterface
-     */
-    protected $framework;
-
-    /**
-     * BaseExporter constructor.
-     *
-     * @param ContaoFrameworkInterface $framework
-     */
-    public function __construct(ContaoFrameworkInterface $framework)
+    public function __construct(
+        private readonly ContaoFramework $framework,
+        private readonly Filesystem $fs,
+        private readonly Formatter $formatter,
+    )
     {
-        $this->framework = $framework;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function export(ExportConfig $config)
+    public function export(ExportConfig $config): Response
     {
         if (null === ($models = $this->getModels($config))) {
             throw new ExportException('There are no members to export');
         }
 
-        /** @var ModelCollectionReader $reader */
-        $reader = $this->framework->createInstance(ModelCollectionReader::class, [$models]);
-        $writer = $this->getWriter();
+        $fileName = sprintf('member-export-%s.%s', date('Y-m-d-H-i-s'), $this->getFileExtension());
 
-        // Set the row callback
-        $writer->setRowCallback($this->getRowCallback($config));
+        $response = new BinaryFileResponse($this->getExportFile($config, $models));
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName);
 
-        // Set the header fields
-        if ($config->hasHeaderFields()) {
-            $reader->setHeaderFields($this->getHeaderFields($config));
-            $writer->enableHeaderFields();
+        return $response;
+    }
+
+    /**
+     * Get the file extension.
+     */
+    abstract protected function getFileExtension(): string;
+
+    /**
+     * Get the export file.
+     */
+    abstract protected function getExportFile(ExportConfig $config, Collection $models): \SplFileInfo;
+
+    /**
+     * Create the temporary file.
+     */
+    protected function createTemporaryFile(string $content = null): \SplFileInfo
+    {
+        $file = new \SplFileInfo(tempnam(sys_get_temp_dir(), 'contao-member-export-'));
+
+        if ($content !== null) {
+            $this->fs->dumpFile($file->getPathname(), $content);
         }
 
-        // Write the data
-        $writer->writeFrom($reader);
-
-        /** @var File $file */
-        $file = $this->framework->createInstance(File::class, [$writer->getFilename()]);
-        $file->sendToBrowser();
+        return $file;
     }
 
     /**
      * Get the row callback.
-     *
-     * @param ExportConfig $config
-     *
-     * @return \Closure
      */
-    protected function getRowCallback(ExportConfig $config)
+    protected function getRowCallback(ExportConfig $config): \closure
     {
         /**
          * @var FilesModel $filesModel
-         * @var Format     $format
          * @var StringUtil $stringUtil
          * @var Validator  $validator
          */
         $filesModel = $this->framework->getAdapter(FilesModel::class);
-        $format = $this->framework->getAdapter(Format::class);
         $stringUtil = $this->framework->getAdapter(StringUtil::class);
         $validator = $this->framework->getAdapter(Validator::class);
 
-        return function (array $row) use ($config, $filesModel, $format, $stringUtil, $validator) {
+        return function (array $row) use ($config, $filesModel, $stringUtil, $validator) {
             // @codeCoverageIgnoreStart
             $return = [];
 
@@ -104,7 +103,7 @@ abstract class BaseExporter implements ExporterInterface
                     if (!isset($row[$name]) || $row[$name] === '') {
                         $return[$name] = '';
                     } else {
-                        $return[$name] = $format->dcaValue('tl_member', $name, $row[$name]);
+                        $return[$name] = $this->formatter->dcaValue('tl_member', $name, $row[$name]);
                     }
 
                     // Handle the UUIDs
@@ -123,12 +122,8 @@ abstract class BaseExporter implements ExporterInterface
 
     /**
      * Get the header fields.
-     *
-     * @param ExportConfig $config
-     *
-     * @return array
      */
-    protected function getHeaderFields(ExportConfig $config)
+    protected function getHeaderFields(ExportConfig $config): array
     {
         $headerFields = [];
 
@@ -141,10 +136,8 @@ abstract class BaseExporter implements ExporterInterface
 
     /**
      * Get the fields.
-     *
-     * @return array
      */
-    protected function getFields()
+    protected function getFields(): array
     {
         /** @var DcaLoader $dcaLoader */
         $dcaLoader = $this->framework->createInstance(DcaLoader::class, ['tl_member']);
@@ -170,12 +163,8 @@ abstract class BaseExporter implements ExporterInterface
 
     /**
      * Get the models.
-     *
-     * @param ExportConfig $config
-     *
-     * @return Collection|null
      */
-    protected function getModels(ExportConfig $config = null)
+    protected function getModels(ExportConfig $config = null): ?Collection
     {
         /** @var MemberModel $memberModel */
         $memberModel = $this->framework->getAdapter(MemberModel::class);
@@ -195,11 +184,4 @@ abstract class BaseExporter implements ExporterInterface
 
         return $memberModel->findBy($columns, $helper->getValues());
     }
-
-    /**
-     * Get the writer.
-     *
-     * @return AbstractFileWriter
-     */
-    abstract protected function getWriter();
 }

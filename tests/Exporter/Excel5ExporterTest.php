@@ -4,19 +4,19 @@ namespace Codefog\MemberExportBundle\Tests\Exporter;
 
 use Codefog\MemberExportBundle\Exception\ExportException;
 use Codefog\MemberExportBundle\ExportConfig;
-use Codefog\MemberExportBundle\Exporter\Excel5Exporter;
+use Codefog\MemberExportBundle\Exporter\ExcelExporter;
 use Haste\IO\Writer\ExcelFileWriter;
 
 class Excel5ExporterTest extends ExporterTestCase
 {
     public function testInstantiation()
     {
-        $this->assertInstanceOf(Excel5Exporter::class, new Excel5Exporter($this->mockFramework()));
+        $this->assertInstanceOf(ExcelExporter::class, new ExcelExporter($this->mockFramework()));
     }
 
     public function testGetAlias()
     {
-        $exporter = new Excel5Exporter($this->mockFramework());
+        $exporter = new ExcelExporter($this->mockFramework());
 
         $this->assertSame('excel5', $exporter->getAlias());
     }
@@ -30,7 +30,7 @@ class Excel5ExporterTest extends ExporterTestCase
             $this->getExportInstances(ExcelFileWriter::class, true, $exportComplete)
         );
 
-        $exporter = new Excel5Exporter($framework);
+        $exporter = new ExcelExporter($framework);
         $exporter->export($this->getExportConfig());
         $exporter->export($this->getExportConfig(false));
 
@@ -45,7 +45,7 @@ class Excel5ExporterTest extends ExporterTestCase
     {
         $this->expectException(ExportException::class);
 
-        $exporter = new Excel5Exporter($this->mockFramework($this->getExportNoDataAdapters()));
+        $exporter = new ExcelExporter($this->mockFramework($this->getExportNoDataAdapters()));
         $exporter->export($this->getExportConfig());
     }
 
@@ -58,7 +58,7 @@ class Excel5ExporterTest extends ExporterTestCase
             $this->getExportInstances(ExcelFileWriter::class, false, $exportComplete)
         );
 
-        $exporter = new Excel5Exporter($framework);
+        $exporter = new ExcelExporter($framework);
         $exporter->export($this->getExportConfig());
 
         $this->assertTrue($exportComplete);
