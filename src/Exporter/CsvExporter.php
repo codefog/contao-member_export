@@ -24,6 +24,11 @@ class CsvExporter extends BaseExporter
         return 'csv';
     }
 
+    public function isAvailable(): bool
+    {
+        return class_exists(Writer::class);
+    }
+
     protected function getFileExtension(): string
     {
         return 'csv';

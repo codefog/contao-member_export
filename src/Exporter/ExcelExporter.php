@@ -25,6 +25,11 @@ class ExcelExporter extends BaseExporter
         return 'excel';
     }
 
+    public function isAvailable(): bool
+    {
+        return class_exists(Spreadsheet::class);
+    }
+
     protected function getFileExtension(): string
     {
         return 'xlsx';
@@ -35,12 +40,12 @@ class ExcelExporter extends BaseExporter
         $spreadsheet = new Spreadsheet();
         $activeSheet = $spreadsheet->getActiveSheet();
 
-        $rowIndex = 0;
+        $rowIndex = 1;
 
         // Add the header fields
         if ($config->hasHeaderFields()) {
             foreach ($this->getHeaderFields($config) as $index => $value) {
-                $activeSheet->setCellValue([$index, $rowIndex], $value);
+                $activeSheet->setCellValue([$index + 1, $rowIndex], $value);
             }
 
             $rowIndex++;
@@ -51,7 +56,7 @@ class ExcelExporter extends BaseExporter
         /** @var MemberModel $model */
         foreach ($models as $model) {
             foreach (array_values($rowCallback($model->row())) as $index => $value) {
-                $activeSheet->setCellValue([$index, $rowIndex], $value);
+                $activeSheet->setCellValue([$index + 1, $rowIndex], $value);
             }
 
             $rowIndex++;

@@ -30,7 +30,7 @@ class ExporterRegistry
     public function get(string $alias): ExporterInterface
     {
         foreach ($this->exporters as $exporter) {
-            if ($exporter->getAlias() === $alias) {
+            if ($exporter->isAvailable() && $exporter->getAlias() === $alias) {
                 return $exporter;
             }
         }
@@ -43,7 +43,9 @@ class ExporterRegistry
         $aliases = [];
 
         foreach ($this->exporters as $exporter) {
-            $aliases[] = $exporter->getAlias();
+            if ($exporter->isAvailable()) {
+                $aliases[] = $exporter->getAlias();
+            }
         }
 
         return $aliases;

@@ -20,13 +20,15 @@ use Contao\Message;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExportController
 {
     public function __construct(
         private readonly ContaoFramework $framework,
         private readonly ExporterRegistry $registry,
-        private readonly RequestStack $requestStack
+        private readonly RequestStack $requestStack,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -123,7 +125,7 @@ class ExportController
         $options = [];
 
         foreach ($this->registry->getAliases() as $alias) {
-            $options[$alias] = $GLOBALS['TL_LANG']['tl_member']['export_formatRef'][$alias];
+            $options[$alias] = $this->translator->trans('tl_member.export_formatRef.' . $alias, [], 'contao_default');
         }
 
         return $options;

@@ -8,4 +8,4 @@
  * @license    MIT
  */
 
-$GLOBALS['BE_MOD']['accounts']['member']['export'] = ['codefog_member_export.controller', 'run'];
+$GLOBALS['BE_MOD']['accounts']['member']['export'] = [\Codefog\MemberExportBundle\ExportController::class, 'run'];

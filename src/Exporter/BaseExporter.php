@@ -128,7 +128,7 @@ abstract class BaseExporter implements ExporterInterface
         $headerFields = [];
 
         foreach ($this->getFields() as $name => $data) {
-            $headerFields[] = ($config->useRawData() || !$data['label'][0]) ? $name : $data['label'][0];
+            $headerFields[] = ($config->useRawData() || !($data['label'][0] ?? false)) ? $name : ($data['label'][0] ?? $name);
         }
 
         return $headerFields;
