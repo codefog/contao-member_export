@@ -11,20 +11,26 @@
 namespace Codefog\MemberExportBundle\Exporter;
 
 use Codefog\MemberExportBundle\ExportConfig;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\HttpFoundation\Response;
 
+#[AutoconfigureTag(self::TAG)]
 interface ExporterInterface
 {
-    /**
-     * Get the alias.
-     *
-     * @return string
-     */
-    public function getAlias();
+    public const TAG = 'codefog_member_exporter';
 
     /**
-     * Run the export.
-     *
-     * @param ExportConfig $config
+     * Get the alias.
      */
-    public function export(ExportConfig $config);
+    public static function getAlias(): string;
+
+    /**
+     * Return true if the exporter is available.
+     */
+    public function isAvailable(): bool;
+
+    /**
+     * Run the export and return the response.
+     */
+    public function export(ExportConfig $config): Response;
 }

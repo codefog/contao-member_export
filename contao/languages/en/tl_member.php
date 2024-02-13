@@ -20,6 +20,5 @@ $GLOBALS['TL_LANG']['tl_member']['export_headerFields'] = ['Include header field
 $GLOBALS['TL_LANG']['tl_member']['export_raw'] = ['Raw data only', 'Export the data without formatting it.'];
 $GLOBALS['TL_LANG']['tl_member']['export_formatRef'] = [
     'csv' => 'CSV (.csv)',
-    'excel5' => 'Excel5 (.xls)',
-    'excel2007' => 'Excel2007 (.xlsx)',
+    'excel' => 'Excel (.xlsx)',
 ];

@@ -11,47 +11,43 @@
 namespace Codefog\MemberExportBundle;
 
 use Codefog\MemberExportBundle\Exporter\ExporterInterface;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class ExporterRegistry
 {
     /**
-     * @var array
+     * @var iterable<ExporterInterface>
      */
-    private $exporters = [];
+    private iterable $exporters;
 
-    /**
-     * Add the exporter.
-     *
-     * @param ExporterInterface $exporter
-     */
-    public function add(ExporterInterface $exporter)
+    public function __construct(
+        #[TaggedIterator(ExporterInterface::TAG, defaultIndexMethod: 'getAlias')] iterable $exporters,
+    )
     {
-        $this->exporters[$exporter->getAlias()] = $exporter;
+        $this->exporters = $exporters;
     }
 
-    /**
-     * @param string $alias
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return ExporterInterface
-     */
-    public function get($alias)
+    public function get(string $alias): ExporterInterface
     {
-        if (!\array_key_exists($alias, $this->exporters)) {
-            throw new \InvalidArgumentException(\sprintf('The exporter "%s" does not exist', $alias));
+        foreach ($this->exporters as $exporter) {
+            if ($exporter->isAvailable() && $exporter->getAlias() === $alias) {
+                return $exporter;
+            }
         }
 
-        return $this->exporters[$alias];
+        throw new \InvalidArgumentException(\sprintf('The exporter "%s" does not exist', $alias));
     }
 
-    /**
-     * Get the aliases.
-     *
-     * @return array
-     */
-    public function getAliases()
+    public function getAliases(): array
     {
-        return \array_keys($this->exporters);
+        $aliases = [];
+
+        foreach ($this->exporters as $exporter) {
+            if ($exporter->isAvailable()) {
+                $aliases[] = $exporter->getAlias();
+            }
+        }
+
+        return $aliases;
     }
 }

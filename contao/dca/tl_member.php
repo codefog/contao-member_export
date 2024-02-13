@@ -8,7 +8,7 @@
  * @license    MIT
  */
 
-array_insert($GLOBALS['TL_DCA']['tl_member']['list']['global_operations'], 0, [
+\Contao\ArrayUtil::arrayInsert($GLOBALS['TL_DCA']['tl_member']['list']['global_operations'], 0, [
     'export' => [
         'label' => &$GLOBALS['TL_LANG']['tl_member']['export'],
         'href' => 'key=export',
