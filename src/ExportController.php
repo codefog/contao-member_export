@@ -13,6 +13,7 @@ namespace Codefog\MemberExportBundle;
 use Codefog\MemberExportBundle\Exception\ExportException;
 use Contao\BackendTemplate;
 use Contao\Controller;
+use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Environment;
@@ -25,6 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ExportController
 {
     public function __construct(
+        private readonly ContaoCsrfTokenManager $csrfTokenManager,
         private readonly ContaoFramework $framework,
         private readonly ExporterRegistry $registry,
         private readonly RequestStack $requestStack,
@@ -110,6 +112,7 @@ class ExportController
         $template->action = $environment->get('request');
         $template->formId = $formId;
         $template->options = $this->generateOptions();
+        $template->requestToken = $this->csrfTokenManager->getDefaultTokenValue();
         $template->message = $message->generate();
 
         return $template;
