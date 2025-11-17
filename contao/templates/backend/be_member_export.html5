@@ -28,26 +28,32 @@
                 <p class="tl_help tl_tip"><?= $GLOBALS['TL_LANG']['tl_member']['export_format'][1] ?></p>
             </div>
 
-            <div class="widget clr">
+            <div class="widget cbx clr">
                 <div class="tl_checkbox_single_container">
-                    <input type="checkbox" name="considerFilters" id="considerFilters" class="tl_checkbox" value="1" checked>
-                    <label for="considerFilters"><?= $GLOBALS['TL_LANG']['tl_member']['export_considerFilters'][0] ?></label>
+                    <span>
+                        <input type="checkbox" name="considerFilters" id="considerFilters" class="tl_checkbox" value="1" checked>
+                        <label for="considerFilters"><?= $GLOBALS['TL_LANG']['tl_member']['export_considerFilters'][0] ?></label>
+                    </span>
                 </div>
                 <p class="tl_help tl_tip"><?= $GLOBALS['TL_LANG']['tl_member']['export_considerFilters'][1] ?></p>
             </div>
 
-            <div class="widget clr">
+            <div class="widget cbx clr">
                 <div class="tl_checkbox_single_container">
-                    <input type="checkbox" name="headerFields" id="headerFields" class="tl_checkbox" value="1">
-                    <label for="headerFields"><?= $GLOBALS['TL_LANG']['tl_member']['export_headerFields'][0] ?></label>
+                    <span>
+                        <input type="checkbox" name="headerFields" id="headerFields" class="tl_checkbox" value="1">
+                        <label for="headerFields"><?= $GLOBALS['TL_LANG']['tl_member']['export_headerFields'][0] ?></label>
+                    </span>
                 </div>
                 <p class="tl_help tl_tip"><?= $GLOBALS['TL_LANG']['tl_member']['export_headerFields'][1] ?></p>
             </div>
 
-            <div class="widget clr">
+            <div class="widget cbx clr">
                 <div class="tl_checkbox_single_container">
-                    <input type="checkbox" name="raw" id="raw" class="tl_checkbox" value="1">
-                    <label for="raw"><?= $GLOBALS['TL_LANG']['tl_member']['export_raw'][0] ?></label>
+                    <span>
+                        <input type="checkbox" name="raw" id="raw" class="tl_checkbox" value="1">
+                        <label for="raw"><?= $GLOBALS['TL_LANG']['tl_member']['export_raw'][0] ?></label>
+                    </span>
                 </div>
                 <p class="tl_help tl_tip"><?= $GLOBALS['TL_LANG']['tl_member']['export_raw'][1] ?></p>
             </div>
