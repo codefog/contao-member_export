@@ -27,7 +27,8 @@
         "phpoffice/phpspreadsheet": "^1.28"
     },
     "conflict": {
-        "contao/manager-plugin": "<2.0 || >=3.0"
+        "contao/manager-plugin": "<2.0 || >=3.0",
+        "phpoffice/phpspreadsheet": "<1.28 || >= 2.0"
     },
     "autoload": {
         "psr-4": {
