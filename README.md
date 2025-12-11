@@ -11,8 +11,8 @@ Member Export is a bundle for the [Contao CMS](https://contao.org).
 It allows to export the member data to a file. Currently supported formats:
 
 - CSV (.csv)
-- Excel5 (.xls) – `phpoffice/phpexcel` is required
-- Excel2007 (.xlsx) – `phpoffice/phpexcel` is required
+- Excel5 (.xls) – `phpoffice/phpspreadsheet` is required
+- Excel2007 (.xlsx) – `phpoffice/phpspreadsheet` is required
 
 ![](docs/images/preview.png)
 
