@@ -93,7 +93,6 @@ abstract class BaseExporter implements ExporterInterface
                 if ($config->useRawData()) {
                     $return[$name] = $row[$name] ?? '';
                     continue;
-
                 }
 
                 // Prevent the date fields from being exported with current date due to an empty value
