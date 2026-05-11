@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Member Export bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, Codefog
+ * @copyright  Copyright (c) 2026, Codefog
  * @author     Codefog <https://codefog.pl>
  * @license    MIT
  */
@@ -35,6 +37,9 @@ class ExcelExporter extends BaseExporter
         return 'xlsx';
     }
 
+    /**
+     * @param Collection<MemberModel> $models
+     */
     protected function getExportFile(ExportConfig $config, Collection $models): \SplFileInfo
     {
         $spreadsheet = new Spreadsheet();
@@ -48,7 +53,7 @@ class ExcelExporter extends BaseExporter
                 $activeSheet->setCellValue([$index + 1, $rowIndex], $value);
             }
 
-            $rowIndex++;
+            ++$rowIndex;
         }
 
         $rowCallback = $this->getRowCallback($config);
@@ -59,7 +64,7 @@ class ExcelExporter extends BaseExporter
                 $activeSheet->setCellValue([$index + 1, $rowIndex], $value);
             }
 
-            $rowIndex++;
+            ++$rowIndex;
         }
 
         $file = $this->createTemporaryFile();

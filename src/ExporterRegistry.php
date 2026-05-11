@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Member Export bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, Codefog
+ * @copyright  Copyright (c) 2026, Codefog
  * @author     Codefog <https://codefog.pl>
  * @license    MIT
  */
@@ -11,26 +13,22 @@
 namespace Codefog\MemberExportBundle;
 
 use Codefog\MemberExportBundle\Exporter\ExporterInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class ExporterRegistry
 {
     /**
-     * @var iterable<ExporterInterface>
+     * @param iterable<ExporterInterface> $exporters
      */
-    private iterable $exporters;
-
     public function __construct(
-        #[TaggedIterator(ExporterInterface::TAG, defaultIndexMethod: 'getAlias')] iterable $exporters,
-    )
-    {
-        $this->exporters = $exporters;
+        #[AutowireIterator(ExporterInterface::TAG, defaultIndexMethod: 'getAlias')] private readonly iterable $exporters,
+    ) {
     }
 
     public function get(string $alias): ExporterInterface
     {
         foreach ($this->exporters as $exporter) {
-            if ($exporter->isAvailable() && $exporter->getAlias() === $alias) {
+            if ($exporter->getAlias() === $alias && $exporter->isAvailable()) {
                 return $exporter;
             }
         }

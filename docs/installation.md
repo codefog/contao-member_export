@@ -9,13 +9,10 @@
 
 Minimum requirements:
 
- - PHP 5.6
- - [Contao](https://github.com/contao/managed-edition) 4.4
- - [Haste](https://github.com/codefog/contao-haste) 4.17
-
-Excel exports requirements:
-
- - [PHPExcel](https://github.com/PHPOffice/PHPExcel) 1.8
+ - PHP 8.1
+ - [Contao](https://github.com/contao/managed-edition) 5.3
+ - [Haste](https://github.com/codefog/contao-haste) 5.1
+- [PHPSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet) 3
 
 
 ## Install using Composer

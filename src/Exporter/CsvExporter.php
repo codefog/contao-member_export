@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Member Export bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, Codefog
+ * @copyright  Copyright (c) 2026, Codefog
  * @author     Codefog <https://codefog.pl>
  * @license    MIT
  */
@@ -34,6 +36,9 @@ class CsvExporter extends BaseExporter
         return 'csv';
     }
 
+    /**
+     * @param Collection<MemberModel> $models
+     */
     protected function getExportFile(ExportConfig $config, Collection $models): \SplFileInfo
     {
         $csv = Writer::createFromString();

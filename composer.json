@@ -12,43 +12,37 @@
     ],
     "require": {
         "php": "^8.1",
-        "contao/core-bundle": "^4.13 || ^5.3",
+        "contao/core-bundle": "^5.3",
         "codefog/contao-haste": "^5.1",
-        "league/csv": "^8.2 || ^9.0"
+        "league/csv": "^8.2 || ^9.0",
+        "phpoffice/phpspreadsheet": "^3.4 || ^4.0 || ^5.0",
+        "symfony/dependency-injection": "^6.4 || ^7 || ^8",
+        "symfony/filesystem": "^6.4 || ^7 || ^8",
+        "symfony/http-foundation": "^6.4 || ^7 || ^8",
+        "symfony/http-kernel": "^6.4 || ^7 || ^8",
+        "symfony/translation-contracts": "^2 || ^3"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
-        "friendsofphp/php-cs-fixer": "^2.2",
-        "phpunit/phpunit": "^10.0",
-        "php-coveralls/php-coveralls": "^2.5",
-        "phpoffice/phpspreadsheet": "^1.28"
-    },
-    "suggest": {
-        "phpoffice/phpspreadsheet": "^1.28"
+        "terminal42/contao-build-tools": "dev-main"
     },
     "conflict": {
-        "contao/manager-plugin": "<2.0 || >=3.0",
-        "phpoffice/phpspreadsheet": "<1.28 || >= 2.0"
+        "contao/manager-plugin": "<2.0 || >=3.0"
     },
     "autoload": {
         "psr-4": {
             "Codefog\\MemberExportBundle\\": "src/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Codefog\\MemberExportBundle\\Tests\\": "tests/"
-        }
-    },
     "extra": {
         "contao-manager-plugin": "Codefog\\MemberExportBundle\\ContaoManager\\Plugin"
     },
-    "replace": {
-        "contao-legacy/member_export": "self.version"
-    },
     "config": {
         "allow-plugins": {
-            "php-http/discovery": true
+            "php-http/discovery": false,
+            "contao-components/installer": false,
+            "contao/manager-plugin": false,
+            "terminal42/contao-build-tools": true
         }
     }
 }
