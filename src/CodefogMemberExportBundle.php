@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Codefog\MemberExportBundle;
 
+use Codefog\MemberExportBundle\Exporter\ExporterInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
@@ -38,5 +39,10 @@ class CodefogMemberExportBundle extends AbstractBundle
         ;
 
         $services->set(ExportController::class)->public();
+
+        $container
+            ->registerForAutoconfiguration(ExporterInterface::class)
+            ->addTag(ExporterInterface::TAG)
+        ;
     }
 }

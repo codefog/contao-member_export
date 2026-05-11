@@ -13,22 +13,22 @@ declare(strict_types=1);
 namespace Codefog\MemberExportBundle;
 
 use Codefog\MemberExportBundle\Exporter\ExporterInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class ExporterRegistry
 {
+    /**
+     * @param iterable<ExporterInterface> $exporters
+     */
     public function __construct(
-        /**
-         * @var iterable<ExporterInterface>
-         */
-        #[TaggedIterator(ExporterInterface::TAG, defaultIndexMethod: 'getAlias')] private readonly iterable $exporters,
+        #[AutowireIterator(ExporterInterface::TAG, defaultIndexMethod: 'getAlias')] private readonly iterable $exporters,
     ) {
     }
 
     public function get(string $alias): ExporterInterface
     {
         foreach ($this->exporters as $exporter) {
-            if ($exporter->isAvailable() && $exporter->getAlias() === $alias) {
+            if ($exporter->getAlias() === $alias && $exporter->isAvailable()) {
                 return $exporter;
             }
         }

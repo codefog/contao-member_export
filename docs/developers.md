@@ -7,7 +7,7 @@
 
 ## Exclude fields from export
 
-To exclude certain fields from the member export you can create the file `app/Resources/contao/dca/tl_member.php`
+To exclude certain fields from the member export you can create the file `contao/dca/tl_member.php`
 with the following content:
 
 ```php
@@ -23,11 +23,10 @@ foreach ($excludedFields as $field) {
 }
 ```
 
-Afterwards you may need to rebuild the cache in Contao Manager or using the commands:
+Afterwards you may need to rebuild the cache in Contao Manager or using the command line:
 
 ```
-vendor/bin/contao-console cache:clear --no-warmup
-vendor/bin/contao-console cache:warmup
+vendor/bin/contao-setup
 ```
 
 
@@ -41,10 +40,11 @@ interface and be registered with the appropriate tag:
 services:
     app.my_exporter:
         class: AppBundle\MemberExporter\MyExporter
-        public: false
         tags:
-            - { name: 'codefog_member_export.exporter', priority: 128 }
+            - { name: 'codefog_member_exporter', priority: 128 }
 ```
+
+If you have `autoconfiguration` enabled for your services, the tag will automatically be added for you.
 
 You should also add the label that will be displayed in the dropdown format menu:
 
