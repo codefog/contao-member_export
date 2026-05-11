@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Member Export bundle for Contao Open Source CMS.
  *
@@ -30,22 +32,18 @@ abstract class BaseExporter implements ExporterInterface
 {
     public function __construct(
         private readonly ContaoFramework $framework,
-        private readonly Filesystem $fs,
+        private readonly Filesystem $filesystem,
         private readonly Formatter $formatter,
-    )
-    {
+    ) {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function export(ExportConfig $config): Response
     {
         if (null === ($models = $this->getModels($config))) {
             throw new ExportException('There are no members to export');
         }
 
-        $fileName = sprintf('member-export-%s.%s', date('Y-m-d-H-i-s'), $this->getFileExtension());
+        $fileName = \sprintf('member-export-%s.%s', date('Y-m-d-H-i-s'), $this->getFileExtension());
 
         $response = new BinaryFileResponse($this->getExportFile($config, $models));
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName);
@@ -60,18 +58,20 @@ abstract class BaseExporter implements ExporterInterface
 
     /**
      * Get the export file.
+     *
+     * @param Collection<MemberModel> $models
      */
     abstract protected function getExportFile(ExportConfig $config, Collection $models): \SplFileInfo;
 
     /**
      * Create the temporary file.
      */
-    protected function createTemporaryFile(string $content = null): \SplFileInfo
+    protected function createTemporaryFile(string|null $content = null): \SplFileInfo
     {
-        $file = new \SplFileInfo(tempnam(sys_get_temp_dir(), 'contao-member-export-'));
+        $file = new \SplFileInfo($this->filesystem->tempnam(sys_get_temp_dir(), 'contao-member-export-'));
 
-        if ($content !== null) {
-            $this->fs->dumpFile($file->getPathname(), $content);
+        if (null !== $content) {
+            $this->filesystem->dumpFile($file->getPathname(), $content);
         }
 
         return $file;
@@ -80,43 +80,39 @@ abstract class BaseExporter implements ExporterInterface
     /**
      * Get the row callback.
      */
-    protected function getRowCallback(ExportConfig $config): \closure
+    protected function getRowCallback(ExportConfig $config): \Closure
     {
-        /**
-         * @var FilesModel $filesModel
-         * @var StringUtil $stringUtil
-         * @var Validator  $validator
-         */
         $filesModel = $this->framework->getAdapter(FilesModel::class);
         $stringUtil = $this->framework->getAdapter(StringUtil::class);
         $validator = $this->framework->getAdapter(Validator::class);
 
         return function (array $row) use ($config, $filesModel, $stringUtil, $validator) {
-            // @codeCoverageIgnoreStart
             $return = [];
 
             foreach ($this->getFields() as $name => $data) {
                 if ($config->useRawData()) {
-                    $return[$name] = $row[$name];
-                } else {
-                    // Prevent the date fields from being exported with current date due to an empty value
-                    if (!isset($row[$name]) || $row[$name] === '') {
-                        $return[$name] = '';
-                    } else {
-                        $return[$name] = $this->formatter->dcaValue('tl_member', $name, $row[$name]);
-                    }
+                    $return[$name] = $row[$name] ?? '';
+                    continue;
 
-                    // Handle the UUIDs
-                    if ($validator->isUuid($row[$name])) {
-                        $return[$name] = $filesModel->findByPk($row[$name])->path;
-                    }
+                }
+
+                // Prevent the date fields from being exported with current date due to an empty value
+                if (!isset($row[$name]) || '' === $row[$name]) {
+                    $return[$name] = '';
+                    continue;
+                }
+
+                $return[$name] = $this->formatter->dcaValue('tl_member', $name, $row[$name]);
+
+                // Handle the UUIDs
+                if ($validator->isUuid($row[$name])) {
+                    $return[$name] = $filesModel->findById($row[$name])->path;
                 }
 
                 $return[$name] = $stringUtil->decodeEntities($return[$name]);
             }
 
-            return \array_values($return);
-            // @codeCoverageIgnoreEnd
+            return array_values($return);
         };
     }
 
@@ -128,7 +124,7 @@ abstract class BaseExporter implements ExporterInterface
         $headerFields = [];
 
         foreach ($this->getFields() as $name => $data) {
-            $headerFields[] = ($config->useRawData() || !($data['label'][0] ?? false)) ? $name : ($data['label'][0] ?? $name);
+            $headerFields[] = $config->useRawData() || !($data['label'][0] ?? false) ? $name : ($data['label'][0] ?? $name);
         }
 
         return $headerFields;
@@ -151,7 +147,11 @@ abstract class BaseExporter implements ExporterInterface
 
         foreach ($GLOBALS['TL_DCA']['tl_member']['fields'] as $name => $data) {
             // Skip the excluded fields
-            if (isset($data['eval']['memberExportExcluded']) && $data['eval']['memberExportExcluded']) {
+            if (
+                'password' === ($data['inputType'] ?? null)
+                || ($data['eval']['doNotShow'] ?? false)
+                || ($data['eval']['memberExportExcluded'] ?? false)
+            ) {
                 continue;
             }
 
@@ -163,14 +163,15 @@ abstract class BaseExporter implements ExporterInterface
 
     /**
      * Get the models.
+     *
+     * @return Collection<MemberModel>|null
      */
-    protected function getModels(ExportConfig $config = null): ?Collection
+    protected function getModels(ExportConfig|null $config = null): Collection|null
     {
-        /** @var MemberModel $memberModel */
         $memberModel = $this->framework->getAdapter(MemberModel::class);
 
         // Return all members if no config was provided (BC) or we should not consider listing filters
-        if ($config === null || !$config->getConsiderFilters()) {
+        if (null === $config || !$config->getConsiderFilters()) {
             return $memberModel->findAll();
         }
 
@@ -178,7 +179,7 @@ abstract class BaseExporter implements ExporterInterface
         $helper->buildProceduresAndValues();
 
         // Return all members if there are no filters set
-        if (count($columns = $helper->getProcedure()) === 0) {
+        if (0 === \count($columns = $helper->getProcedure())) {
             return $memberModel->findAll();
         }
 

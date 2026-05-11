@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Member Export bundle for Contao Open Source CMS.
  *
- * @copyright  Copyright (c) 2017, Codefog
+ * @copyright  Copyright (c) 2026, Codefog
  * @author     Codefog <https://codefog.pl>
  * @license    MIT
  */
@@ -15,16 +17,12 @@ use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class ExporterRegistry
 {
-    /**
-     * @var iterable<ExporterInterface>
-     */
-    private iterable $exporters;
-
     public function __construct(
-        #[TaggedIterator(ExporterInterface::TAG, defaultIndexMethod: 'getAlias')] iterable $exporters,
-    )
-    {
-        $this->exporters = $exporters;
+        /**
+         * @var iterable<ExporterInterface>
+         */
+        #[TaggedIterator(ExporterInterface::TAG, defaultIndexMethod: 'getAlias')] private readonly iterable $exporters,
+    ) {
     }
 
     public function get(string $alias): ExporterInterface

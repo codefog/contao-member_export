@@ -1,0 +1,69 @@
+{% trans_default_domain 'contao_tl_member' %}
+<div id="tl_buttons">
+    <a href="{{ backUrl }}" class="header_back" title="{{ 'MSC.backBTTitle'|trans([], 'contao_default') }}" accesskey="b">{{ 'MSC.backBT'|trans([], 'contao_default') }}</a>
+</div>
+
+<div class="member-export-content">
+    <h2 class="sub_headline">{{ 'tl_member.export.1'|trans }}</h2>
+
+    <div class="member-export-text">
+        <p>{{ 'tl_member.export_description'|trans }}</p>
+    </div>
+</div>
+
+{{ message }}
+
+<form id="tl_member_export" class="tl_form" method="post" data-turbo="false">
+    <div class="tl_formbody_edit">
+        <input type="hidden" name="FORM_SUBMIT" value="{{ formId }}">
+        <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+
+        <fieldset class="tl_tbox nolegend">
+            <div class="widget w50 clr">
+                <h3><label for="format">{{ 'tl_member.export_format.0'|trans }}</label></h3>
+                <select name="format" id="format" class="tl_select">
+                    {% for value, label in options %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <p class="tl_help tl_tip">{{ 'tl_member.export_format.1'|trans }}</p>
+            </div>
+
+            <div class="widget cbx clr">
+                <div class="tl_checkbox_single_container">
+                    <span>
+                        <input type="checkbox" name="considerFilters" id="considerFilters" class="tl_checkbox" value="1" checked>
+                        <label for="considerFilters">{{ 'tl_member.export_considerFilters.0'|trans }}</label>
+                    </span>
+                </div>
+                <p class="tl_help tl_tip">{{ 'tl_member.export_considerFilters.1'|trans }}</p>
+            </div>
+
+            <div class="widget cbx clr">
+                <div class="tl_checkbox_single_container">
+                    <span>
+                        <input type="checkbox" name="headerFields" id="headerFields" class="tl_checkbox" value="1">
+                        <label for="headerFields">{{ 'tl_member.export_headerFields.0'|trans }}</label>
+                    </span>
+                </div>
+                <p class="tl_help tl_tip">{{ 'tl_member.export_headerFields.1'|trans }}</p>
+            </div>
+
+            <div class="widget cbx clr">
+                <div class="tl_checkbox_single_container">
+                    <span>
+                        <input type="checkbox" name="raw" id="raw" class="tl_checkbox" value="1">
+                        <label for="raw">{{ 'tl_member.export_raw.0'|trans }}</label>
+                    </span>
+                </div>
+                <p class="tl_help tl_tip">{{ 'tl_member.export_raw.1'|trans }}</p>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="tl_formbody_submit">
+        <div class="tl_submit_container">
+            <button type="submit" name="export" id="export" class="tl_submit" accesskey="e">{{ 'tl_member.export.0'|trans }}</button>
+        </div>
+    </div>
+</form>
